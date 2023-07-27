@@ -1,42 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Визначити дати в тексті</title>
+    <title>Визначити дати в тексті</title>
+    <script>
+        function findDates(inputStr) {
+            const regex = /\b\d{4}-\d{2}-\d{2}\b/g;
+            const matches = inputStr.match(regex);
+
+            if (!matches) {
+                return [];
+            }
+
+            const result = [];
+            const months = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            for (const dateStr of matches) {
+                const [year, month, day] = dateStr.split('-').map(Number);
+
+                if (month >= 1 && month <= 12) {
+                    const monthName = months[month - 1];
+                    result.push({ year, month, day, monthName });
+                }
+            }
+
+            return result;
+        }
+        const str = "The dates between 1976-03-12, and 1983-10-14, the code was 2004-67-12 and possible invalid date 8765-11-34";
+        const dates = findDates(str);
+        console.log(dates);
+    </script>
 </head>
 <body>
-  <h1>Find Dates in Text</h1>
-  <label for="text">Enter text:</label>
-  <input type="text" id="text" />
-  <button onclick="findDates()">Find Dates</button>
-  <ul id="result"></ul>
-  <script>
-    function findDates() {
-      const text = document.getElementById('text').value;
-      const resultElement = document.getElementById('result');
-      resultElement.innerHTML = '';
-
-      const dateRegex = /\b\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2]\d|3[01])\b/g;
-      const monthNames = [
-        'January', 'February', 'March', 'April', 'May', 'June', 'July',
-        'August', 'September', 'October', 'November', 'December'
-      ];
-
-      const matches = text.match(dateRegex);
-      if (!matches) {
-        return;
-      }
-
-      for (const dateStr of matches) {
-        const [year, month, day] = dateStr.split('-').map(Number);
-        const monthName = monthNames[month - 1];
-
-        resultElement.innerHTML += `
-          <li>
-            { day: ${day}, month: ${month}, monthName: '${monthName}', year: ${year} }
-          </li>
-        `;
-      }
-    }
-  </script>
 </body>
 </html>
