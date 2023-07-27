@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Спростити номер телефону</title>
+</head>
+<body>
+    <script>
+        function localizePhoneNumber(phoneStr) {
+            const pattern = /^(\+?380\s?\(?\d{2}\)?(\s?|-)?\d{3}(\s?|-)?\d{2}(\s?|-)?\d{2})$/;
+            const match = phoneStr.match(pattern);
+            if (match) {
+                return phoneStr.replace(/\D/g, '').replace(/^(\+?380)/, '0');
+            } else {
+                return null;
+            }
+        }
+
+        console.log(localizePhoneNumber("+380 44 364 83 65")); // "0443648365"
+        console.log(localizePhoneNumber("+380 44-364-83-65")); // "0443648365"
+        console.log(localizePhoneNumber("+38 (044) 364 83 65")); // null
+    </script>
+</body>
+</html>
