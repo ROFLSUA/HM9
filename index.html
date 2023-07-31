@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Спростити номер телефону</title>
+  <title>Спростити номер телефону</title>
 </head>
 <body>
-    <script>
-        function localizePhoneNumber(phoneStr) {
-            const pattern = /^(\+?380\s?\(?\d{2}\)?(\s?|-)?\d{3}(\s?|-)?\d{2}(\s?|-)?\d{2})$/;
-            const match = phoneStr.match(pattern);
-            if (match) {
-                return phoneStr.replace(/\D/g, '').replace(/^(\+?380)/, '0');
-            } else {
-                return null;
-            }
-        }
+  <script>
+   function extractPhoneNumber(inputString) {
+  const phoneNumberRegexes = [
+    /^380\s\d{2}\s\d{3}\s\d{2}\s\d{2}$/,    // 380 44 364 83 65
+    /^\+380\s\d{2}\s\d{3}\s\d{2}\s\d{2}$/,  // +380 44 364 83 65
+    /^380-\d{2}-\d{3}-\d{2}-\d{2}$/,       // 380-44-364-83-65
+    /^\+380-\d{2}-\d{3}-\d{2}-\d{2}$/      // +380-44-364-83-65
+  ];
 
-        console.log(localizePhoneNumber("+380 44 364 83 65")); // "0443648365"
-        console.log(localizePhoneNumber("+380 44-364-83-65")); // "0443648365"
-        console.log(localizePhoneNumber("+38 (044) 364 83 65")); // null
-    </script>
+  for (const regex of phoneNumberRegexes) {
+    if (inputString.match(regex)) {
+      const digitsOnly = inputString.replace(/\D/g, "");
+      if (digitsOnly.length === 12) {
+        return "0" + digitsOnly.slice(3); 
+      } else {
+        return null;
+      }
+    }
+  }
+  return null;
+}
+
+console.log(extractPhoneNumber("+380 44 364 83 65"));   // Виведе: 0443648365
+console.log(extractPhoneNumber("380-44-364-83-65"));   // Виведе: 0443648365
+console.log(extractPhoneNumber("+38 044 364 83 65"));  // Виведе: null
+  </script>
 </body>
 </html>
